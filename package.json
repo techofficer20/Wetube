@@ -13,9 +13,15 @@
   },
   "homepage": "https://github.com/techofficer20/wetube#readme",
   "dependencies": {
+    "@babel/core": "^7.5.0",
+    "@babel/node": "^7.5.0",
+    "@babel/preset-env": "^7.5.3",
     "express": "^4.17.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon --exec babel-node index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
   }
 }
