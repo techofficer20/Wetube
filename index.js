@@ -1,5 +1,9 @@
 // const express = require("express"); // express 파일 찾음. 1순위 같은 파일 위치, 2순위 node_modules
 import express from "express";
+import morgan from "morgan";
+import helmet from "helmet";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 const app = express(); // app 상수에 express를 실행해서 담음.
 
 const PORT = 4000;
@@ -30,24 +34,31 @@ function handleProfile(req, res) {
 }
 */
 const handleProfile = (req, res) => res.send("You are on my profile");
-const betweenHome = (req, res, next) => {
-  console.log("Between");
-  next();
+
+// cookie parser, body parser는 cookie와 body를 다루는 것을 도와준다.
+// cookie parser: session을 다루기 위해 cookie에 사용자 정보 저장
+// body parser: form 데이터 가진 request object에 접근
+app.use(cookieParser());
+app.use(bodyParser.json()); // json
+app.use(bodyParser.urlencoded({ extended: true })); // html
+app.use(helmet()); // node.js 앱 보안에 도움
+app.use(morgan("dev")); // logging (무슨 일이 어디서 일어났는지 기록, 인자로 로깅 옵션 설정 가능)
+
+const middleware = (req, res, next) => {
+  res.send("not happening");
 };
-/* middleware란 처리가 끝날 때 까지 연결되어 있는 것
-request는 어떻게 시작? 웹사이트에 접속하려 할 때부터..
-유저와 마지막 응답 사이에 존재하는 것을 middleware라 함
-express의 모든 함수는 middleware가 될 수 있음.
-express의 모든 route와 그런 것들은 request, response, next를 인자로 가지고 있는데
-middleware는 이때 response에 해당됨.
-res.send()를 마지막에 하지 않는다면 계속 로딩 화면이 뜰 것.
-우리가 원하는 만큼 middleware를 사용할 수 있음.
-모든 요청에 middleware 설정 방법: app.use() // get함수(route처리) 이전에 먼저 설정
-*/
-app.use(betweenHome);
-
-app.get("/", handleHome);
+app.get("/", middleware, handleHome);
 app.get("/profile", handleProfile);
-
 // listen하기 시작할 때 handleListening 함수를 실행하게 됨 (콜백 함수)
 app.listen(PORT, handleListening);
+
+/*
+처음 단계: betweenHome이 get 요청 (request)을 받는다.
+response인 console.log("Between")을 실행한다.
+다음 next인 handleHome을 호출한다.
+
+handleHome(req, res)에서 req는 위에 betweenHome에서의 next 호출이 된다.
+response는 res.send("Hello from my home!")이 된다.
+app.get("/", betweenHome, handleHome); 이전에
+app.use(betweenHome())으로 둘 수 있다. 이렇게 하면 모든 요청에 middleware가 적용된다.
+*/
