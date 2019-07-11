@@ -4,17 +4,14 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import { userRouter } from "./router";
 const app = express(); // app 상수에 express를 실행해서 담음.
-
-const PORT = 4000;
 
 /* 
 function handleListening() {
   console.log(`Listening on: http://localhost:${PORT}`);
 }
 */
-const handleListening = () =>
-  console.log(`Listening on: http://localhost:${PORT}`);
 /*
 function handleHome(req, res) {
  
@@ -49,9 +46,9 @@ const middleware = (req, res, next) => {
 };
 app.get("/", middleware, handleHome);
 app.get("/profile", handleProfile);
+app.use("/user", userRouter); // /user를 요청하면 userRouter 전체를 쓰겠다는 의미
+export default app; // 누군가 내 파일을 불러올 때 (import) app object를 주겠다는 의미
 // listen하기 시작할 때 handleListening 함수를 실행하게 됨 (콜백 함수)
-app.listen(PORT, handleListening);
-
 /*
 처음 단계: betweenHome이 get 요청 (request)을 받는다.
 response인 console.log("Between")을 실행한다.
