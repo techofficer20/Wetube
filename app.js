@@ -16,8 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // html
 app.use(helmet()); // node.js 앱 보안에 도움
 app.use(morgan("dev")); // logging (무슨 일이 어디서 일어났는지 기록, 인자로 로깅 옵션 설정 가능)
 
-app.use(routes.home, globalRouter);
-app.use(routes.users, userRouter);
-app.use(routes.videos, videoRouter);
+app.use(routes.home, globalRouter); // localhost:4000/ 를 기본
+app.use(routes.users, userRouter); // localhost:4000/users를 기본 (videos를 보고 싶다면 loaclhost:videos/users/users)
+app.use(routes.videos, videoRouter); // localhost:4000/videos를 기본 (videos를 보고 싶다면 localhost:4000/videos/videos)
 
 export default app;
