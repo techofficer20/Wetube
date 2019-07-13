@@ -1,5 +1,5 @@
 export const search = (req, res) => res.send("Search");
-export const home = (req, res) => res.send("Home");
+export const home = (req, res) => res.render("Home");
 
 export const videos = (req, res) => res.send("Videos");
 export const upload = (req, res) => res.send("Upload");

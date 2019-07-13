@@ -10,6 +10,7 @@ import globalRouter from "./routers/globalRouter";
 import routes from "./routes";
 const app = express(); // app 상수에 express를 실행해서 담음.
 
+app.set("view engine", "pug");
 app.use(cookieParser());
 app.use(bodyParser.json()); // json
 app.use(bodyParser.urlencoded({ extended: true })); // html
