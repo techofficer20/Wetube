@@ -8,7 +8,7 @@ function handleListening() {
     console.log(`Listening on: http://localhost:${PORT}`)
 } babel 필요 X
 */
-const handleListening = () => console.log(`Listening on: https//localhost:${PORT}`); // babel 필요
+const handleListening = () => console.log(`Listening on: http://localhost:${PORT}`); // babel 필요
 /*
 function handleHome(req, res) {
     console.log(req);
@@ -23,6 +23,11 @@ function handleProfile(req, res){
 */
 const handleProfile = (req, res) => res.send("You are on my profile");
 
-app.get("/", handleHome);
+const betweenHome = (req, res, next) => {
+    console.log("Between");
+    next();
+}
+app.use(betweenHome);
+app.get("/", betweenHome, handleHome);
 app.get("/profile", handleProfile);
 app.listen(4000, handleListening);
